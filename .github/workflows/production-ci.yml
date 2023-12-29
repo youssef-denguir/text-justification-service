@@ -24,6 +24,8 @@
         run: npm ci
       - name: Build project
         run: npm run build
+      - name: Run lint
+        run: npm run lint
       - name: Execute tests and generate coverage report
         run: npm run test:cov
       - name: Check test coverage
