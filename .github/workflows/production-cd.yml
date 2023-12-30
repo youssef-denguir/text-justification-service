@@ -1,0 +1,52 @@
+# This workflow will trigger a deployment of the justification service to google cloud
+name: CD
+on:
+  # Triggers the workflow on push events but only for the release branch
+  push:
+    branches: [release]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: "read"
+      id-token: "write"
+
+    env:
+      IMAGE_NAME: gcr.io/bozproject-407318/text-justification-service-image
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: "projects/264824871943/locations/global/workloadIdentityPools/gh-pool/providers/gh-provider"
+          service_account: "github-actions-service-account@bozproject-407318.iam.gserviceaccount.com"
+
+      - name: Configure Docker
+        run: gcloud auth configure-docker --quiet
+
+      - name: Build Docker image
+        run: docker build . -t $IMAGE_NAME
+
+      - name: Push Docker image
+        run: docker push $IMAGE_NAME
+
+      - id: deploy
+        name: Deploy Docker image
+        uses: "google-github-actions/deploy-cloudrun@v2"
+        with:
+          image: ${{ env.IMAGE_NAME }}
+          region: us-central1
+          service: text-justification-service
+          flags: --port=3000
+
+      - name: Test URL
+        run: curl "${{ steps.deploy.outputs.url }}"
