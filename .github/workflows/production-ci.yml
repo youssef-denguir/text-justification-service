@@ -1,35 +1,36 @@
 # This workflow will do a clean installation of node dependencies, build the source code, run tests and checks coverage
-  on: 
-    push:
-      branches:
-      - main
-    pull_request:
-      branches:
-      - main
-  jobs:
-    build:
-      runs-on: ubuntu-latest
-      strategy:
-        matrix:
-          node-version: 
-          - 18.x
-      steps:
-      - name: Checkout to current branch
-        uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-         node-version: ${{ matrix.node-version }}
-      - name: Install dependencies 
-        run: npm ci
-      - name: Build project
-        run: npm run build
-      - name: Run lint
-        run: npm run lint
-      - name: Execute tests and generate coverage report
-        run: npm run test:cov
-      - name: Check test coverage
-        uses: terencetcf/github-actions-lcov-minimum-coverage-checker@v1
-        with:
-          coverage-file: coverage/lcov.info
-          minimum-coverage: 90
+name: CI
+on: 
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: 
+        - 18.x
+    steps:
+    - name: Checkout to current branch
+      uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Install dependencies 
+      run: npm ci
+    - name: Build project
+      run: npm run build
+    - name: Run lint
+      run: npm run lint
+    - name: Execute tests and generate coverage report
+      run: npm run test:cov
+    - name: Check test coverage
+      uses: terencetcf/github-actions-lcov-minimum-coverage-checker@v1
+      with:
+        coverage-file: coverage/lcov.info
+        minimum-coverage: 90
