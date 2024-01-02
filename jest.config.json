@@ -8,9 +8,10 @@
         ".module.ts",
         "src/main.ts"
     ],
+    "testPathIgnorePatterns": ["-e2e.spec.ts$"],
     "rootDir": ".",
     "testEnvironment": "node",
-    "testRegex": ".\\.spec.ts$",
+    "testRegex": ".spec.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     }
