@@ -3,9 +3,6 @@ import { AuthenticationModule } from './authentication/authentication.module';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
-    AuthenticationModule,
-  ],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), AuthenticationModule],
 })
 export class AppModule {}

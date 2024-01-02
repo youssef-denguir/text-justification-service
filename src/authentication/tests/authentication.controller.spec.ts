@@ -8,9 +8,9 @@ describe('AuthenticationController', () => {
   let jwtService: JwtService;
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [JwtModule.register({secret: "test_secret"})],
+      imports: [JwtModule.register({ secret: 'test_secret' })],
       controllers: [AuthenticationController],
-      providers: [AuthenticationService]
+      providers: [AuthenticationService],
     }).compile();
 
     controller = module.get<AuthenticationController>(AuthenticationController);
@@ -22,26 +22,26 @@ describe('AuthenticationController', () => {
   });
 
   it('should return an object wrapping the access_token', async () => {
-    const email = "youssef@gmail.com";
-    const result = await controller.generateToken({email});
+    const email = 'youssef@gmail.com';
+    const result = await controller.generateToken({ email });
 
     const expectedResult = {
-      access_token: jwtService.sign({email})
+      access_token: jwtService.sign({ email }),
     };
 
     expect(result).toEqual(expectedResult);
   });
 
   it('should generate consistent token', async () => {
-    const email = "youssef@gmail.com";
+    const email = 'youssef@gmail.com';
     const expectedResult = {
-      access_token: jwtService.sign({email})
+      access_token: jwtService.sign({ email }),
     };
-    
-    let result = await controller.generateToken({email});
+
+    let result = await controller.generateToken({ email });
     expect(result).toEqual(expectedResult);
 
-    result = await controller.generateToken({email});
+    result = await controller.generateToken({ email });
     expect(result).toEqual(expectedResult);
   });
 });

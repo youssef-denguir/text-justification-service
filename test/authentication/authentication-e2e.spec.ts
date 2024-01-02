@@ -16,19 +16,19 @@ describe('AuthenticationController (e2e)', () => {
     await app.init();
   });
 
-  describe("Generate token endpoint", () => {
-      it('returns 200 (Ok)', () => {
-        return request(app.getHttpServer())
-          .post('/authentication/generate-token')
-          .send({ email: "youssef@gmail.com"})
-          .expect(HttpStatus.OK)
-      });
+  describe('Generate token endpoint', () => {
+    it('returns 200 (Ok)', () => {
+      return request(app.getHttpServer())
+        .post('/authentication/generate-token')
+        .send({ email: 'youssef@gmail.com' })
+        .expect(HttpStatus.OK);
+    });
 
-      it('returns 400 (Bad Request)', () => {
-        return request(app.getHttpServer())
-          .post('/authentication/generate-token')
-          .send({ email: "youssef "})
-          .expect(HttpStatus.BAD_REQUEST)
-      });
+    it('returns 400 (Bad Request)', () => {
+      return request(app.getHttpServer())
+        .post('/authentication/generate-token')
+        .send({ email: 'youssef ' })
+        .expect(HttpStatus.BAD_REQUEST);
+    });
   });
 });

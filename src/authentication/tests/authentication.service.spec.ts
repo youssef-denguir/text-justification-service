@@ -8,7 +8,7 @@ describe('AuthenticationService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [JwtModule.register({secret: "testSecret"})],
+      imports: [JwtModule.register({ secret: 'testSecret' })],
       providers: [AuthenticationService],
     }).compile();
 
@@ -17,9 +17,9 @@ describe('AuthenticationService', () => {
   });
 
   it('should return an object wrapping the access_token', async () => {
-    const email = "youssef@gmail.com";
+    const email = 'youssef@gmail.com';
     const result = await service.generateToken(email);
-    const expectedResult = jwtService.sign({email});
+    const expectedResult = jwtService.sign({ email });
     expect(result).toEqual(expectedResult);
   });
 });
