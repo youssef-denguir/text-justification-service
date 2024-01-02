@@ -6,13 +6,23 @@ import {
   Post,
   RawBodyRequest,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { JustificationService } from './justification.service';
-import { ApiBody, ApiConsumes, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Request } from 'express';
 import { TextJustificationResponse } from './dto/text-justification-response';
+import { AuthenticationGuard } from '@/authentication/guards/authentication.guard';
 
 @ApiTags('Text justifcation')
+@ApiBearerAuth()
+@UseGuards(AuthenticationGuard)
 @Controller('justify')
 export class JustificationController {
   constructor(private readonly justificationService: JustificationService) {}
