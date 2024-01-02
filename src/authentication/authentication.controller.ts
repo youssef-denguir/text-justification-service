@@ -2,6 +2,7 @@ import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { GenerateTokenRequest } from './dto/generate-token-request';
 import { GenerateTokenResponse } from './dto/generate-token-response';
+import { ApiOkResponse } from '@nestjs/swagger';
 
 @Controller('authentication')
 export class AuthenticationController {
@@ -9,6 +10,7 @@ export class AuthenticationController {
 
   @HttpCode(HttpStatus.OK)
   @Post('/generate-token')
+  @ApiOkResponse({ type: GenerateTokenResponse })
   async generateToken(
     @Body() request: GenerateTokenRequest,
   ): Promise<GenerateTokenResponse> {
