@@ -12,8 +12,6 @@ export class FullJustificationStrategy implements ILineJusificationStrategy {
     let line: string = words[0];
 
     for (let i = 1; i < words.length; i++) {
-      console.log(extraSpaces);
-      console.log(spacesBetweenWords);
       const spaces: string = ' '.repeat(
         extraSpaces > 0 ? spacesBetweenWords + 1 : spacesBetweenWords,
       );
