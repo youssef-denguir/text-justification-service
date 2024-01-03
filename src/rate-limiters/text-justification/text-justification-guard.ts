@@ -26,12 +26,13 @@ export class TextJustificationGuard implements CanActivate {
 
     const words = new WordSplitter().split(text, JUSTIFICATION_LINE_LENGTH);
     const { email } = request.tokenPayload;
-    const cachedRecord = this._wordsCountCache.get(email);
+    let cachedRecord = this._wordsCountCache.get(email);
     if (!cachedRecord || !isCurrentDay(cachedRecord.date)) {
-      this._wordsCountCache.set(email, { date: new Date(), count: 0 });
+      cachedRecord = { date: new Date(), count: 0 };
+      this._wordsCountCache.set(email, cachedRecord);
     }
 
-    if (words.length + (cachedRecord?.count ?? 0) > WORDS_COUNT_LIMIT_PER_DAY) {
+    if (words.length + cachedRecord.count > WORDS_COUNT_LIMIT_PER_DAY) {
       throw new PaymentRequiredException(
         `You can't exceed ${WORDS_COUNT_LIMIT_PER_DAY} words per day! Payment is required to unlock more usage`,
       );
