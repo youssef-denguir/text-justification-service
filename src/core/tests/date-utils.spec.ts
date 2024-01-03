@@ -11,16 +11,16 @@ describe('Dateutils', () => {
   });
 
   describe('isCurrentDay', () => {
-      it('should return true when it is the same day', () => {
-        const now = new Date();
-        expect(utils.isCurrentDay(now)).toEqual(true);
-      });
-    
-      it('should return false when it is a different day', () => {
-        const now = new Date();
-        const yesterday = new Date();
-        yesterday.setDate(now.getDate() - 1);
-        expect(utils.isCurrentDay(yesterday)).toEqual(false);
+    it('should return true when it is the same day', () => {
+      const now = new Date();
+      expect(utils.isCurrentDay(now)).toEqual(true);
     });
-  })
+
+    it('should return false when it is a different day', () => {
+      const now = new Date();
+      const yesterday = new Date();
+      yesterday.setDate(now.getDate() - 1);
+      expect(utils.isCurrentDay(yesterday)).toEqual(false);
+    });
+  });
 });

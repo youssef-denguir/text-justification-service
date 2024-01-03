@@ -32,7 +32,7 @@ export class JustificationController {
   constructor(
     private readonly justificationService: JustificationService,
     private readonly wordsCountStore: WordsCountStore,
-  ) { }
+  ) {}
 
   @Post()
   @UseGuards(TextJustificationGuard)

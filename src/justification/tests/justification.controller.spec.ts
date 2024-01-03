@@ -9,7 +9,6 @@ import { RateLimitingModule } from '@/rate-limiting/rate-limiting.module';
 
 describe('AuthenticationController', () => {
   let controller: JustificationController;
-  let service: JustificationService;
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [JwtModule, RateLimitingModule],
@@ -22,7 +21,6 @@ describe('AuthenticationController', () => {
     }).compile();
 
     controller = module.get<JustificationController>(JustificationController);
-    service = module.get<JustificationService>(JustificationService);
   });
 
   it('should be defined', () => {
@@ -31,7 +29,10 @@ describe('AuthenticationController', () => {
 
   it('should parse body and return object', () => {
     const input = 'text    one left';
-    const request = { body: input, tokenPayload: { email: "youssef@gmail.com"} } as AuthenticatedRequest;
+    const request = {
+      body: input,
+      tokenPayload: { email: 'youssef@gmail.com' },
+    } as AuthenticatedRequest;
     const result = controller.justifyText(request);
     const expected = 'text one left'.concat(' '.repeat(67));
     expect(result.justified_text).toEqual(expected);
