@@ -3,7 +3,6 @@ import {
   WORDS_COUNT_LIMIT_PER_DAY,
 } from '@/core/constants';
 import { PaymentRequiredException } from '@/core/exceptions/payment-required-exception';
-import { isCurrentDay } from '@/core/utils/date-utils';
 import {
   BadRequestException,
   CanActivate,
@@ -12,10 +11,11 @@ import {
 } from '@nestjs/common';
 import { WordsCountStore } from './words-count.store';
 import { WordSplitter } from '@/core/formatters/word-splitter';
+import { DateUtils } from '@/core/utils/date-utils';
 
 @Injectable()
 export class TextJustificationGuard implements CanActivate {
-  constructor(private readonly _wordsCountCache: WordsCountStore) {}
+  constructor(private readonly wordsCountCache: WordsCountStore) { }
 
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
@@ -26,10 +26,11 @@ export class TextJustificationGuard implements CanActivate {
 
     const words = new WordSplitter().split(text, JUSTIFICATION_LINE_LENGTH);
     const { email } = request.tokenPayload;
-    let cachedRecord = this._wordsCountCache.get(email);
-    if (!cachedRecord || !isCurrentDay(cachedRecord.date)) {
+    let cachedRecord = this.wordsCountCache.get(email);
+    const dateUtils = new DateUtils();
+    if (!cachedRecord || !dateUtils.isCurrentDay(cachedRecord.date)) {
       cachedRecord = { date: new Date(), count: 0 };
-      this._wordsCountCache.set(email, cachedRecord);
+      this.wordsCountCache.set(email, cachedRecord);
     }
 
     if (words.length + cachedRecord.count > WORDS_COUNT_LIMIT_PER_DAY) {
