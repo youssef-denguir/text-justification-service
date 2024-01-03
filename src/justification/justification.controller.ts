@@ -19,9 +19,9 @@ import { Request } from 'express';
 import { TextJustificationResponse } from './dto/text-justification-response';
 import { AuthenticationGuard } from '@/authentication/guards/authentication.guard';
 import { JUSTIFICATION_LINE_LENGTH } from '@/core/constants';
-import { WordSplitter } from '../core/formatters/word-splitter';
-import { TextJustificationGuard } from '@/rate-limiters/text-justification/text-justification-guard';
-import { WordsCountStore } from '@/rate-limiters/text-justification/words-count.store';
+import { WordSplitter } from '@/core/formatters/word-splitter';
+import { TextJustificationGuard } from '@/rate-limiting/text-justification/text-justification-guard';
+import { WordsCountStore } from '@/rate-limiting/text-justification/words-count.store';
 
 @ApiTags('Text justifcation')
 @ApiBearerAuth()
