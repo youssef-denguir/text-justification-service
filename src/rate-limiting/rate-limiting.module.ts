@@ -3,6 +3,6 @@ import { WordsCountStore } from './text-justification/words-count.store';
 
 @Module({
   providers: [WordsCountStore],
-  exports: [WordsCountStore], 
+  exports: [WordsCountStore],
 })
-export class RateLimitersModule {}
+export class RateLimitingModule {}
