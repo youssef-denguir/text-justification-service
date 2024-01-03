@@ -3,6 +3,11 @@ import { LeftJustificationStrategy } from './left-text-jusitifcation';
 import { ILineJusificationStrategy } from './abstractions/text-justification-strategy.interface';
 import { JustificationType } from './text-justification-type';
 
+/**
+ * A class that provider the strategy instance depending on the justification type value
+ *
+ * @class LineJustificationStrategyProvider
+ */
 export class LineJustificationStrategyProvider {
   getTextJustificationStrategy(
     type: JustificationType,
