@@ -9,7 +9,7 @@ import { WORDS_COUNT_LIMIT_PER_DAY } from '@/core/constants';
 
 describe('TextJustificationGuard', () => {
   let guard: TextJustificationGuard;
-  let cache: WordsCountStore; 
+  let cache: WordsCountStore;
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [WordsCountStore, TextJustificationGuard],
@@ -23,8 +23,8 @@ describe('TextJustificationGuard', () => {
     const email = 'youssef@gmail.com';
     expect(cache.get(email)).toBeUndefined();
     const request: any = {
-        tokenPayload: { email },
-        body: "some text",
+      tokenPayload: { email },
+      body: 'some text',
     };
 
     const executionContextMock = {
@@ -42,7 +42,7 @@ describe('TextJustificationGuard', () => {
   it('should throw bad request exception when body is empty', () => {
     const email = 'youssef@gmail.com';
     const request: any = {
-        tokenPayload: { email },
+      tokenPayload: { email },
     };
 
     const executionContextMock = {
@@ -58,10 +58,10 @@ describe('TextJustificationGuard', () => {
 
   it('should throw PaymentRequiredException when exceeding allowed count for current day', () => {
     const email = 'youssef@gmail.com';
-    cache.set(email, {date: new Date(), count: WORDS_COUNT_LIMIT_PER_DAY});
+    cache.set(email, { date: new Date(), count: WORDS_COUNT_LIMIT_PER_DAY });
     const request: any = {
-        tokenPayload: { email },
-        body: "some text",
+      tokenPayload: { email },
+      body: 'some text',
     };
 
     const executionContextMock = {
@@ -80,11 +80,11 @@ describe('TextJustificationGuard', () => {
     const now = new Date();
     const yesterday = new Date();
     yesterday.setDate(now.getDate() - 1);
-    cache.set(email, {date: yesterday, count: WORDS_COUNT_LIMIT_PER_DAY});
+    cache.set(email, { date: yesterday, count: WORDS_COUNT_LIMIT_PER_DAY });
 
     const request: any = {
-        tokenPayload: { email },
-        body: "some text",
+      tokenPayload: { email },
+      body: 'some text',
     };
 
     const executionContextMock = {
@@ -95,6 +95,6 @@ describe('TextJustificationGuard', () => {
     } as ExecutionContext;
 
     expect(guard.canActivate(executionContextMock)).toEqual(true);
-    expect(cache.get(email)).toEqual({date: now, count: 0});
+    expect(cache.get(email)).toEqual({ date: now, count: 0 });
   });
 });

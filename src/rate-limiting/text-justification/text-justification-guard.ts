@@ -15,7 +15,7 @@ import { DateUtils } from '@/core/utils/date-utils';
 
 @Injectable()
 export class TextJustificationGuard implements CanActivate {
-  constructor(private readonly wordsCountCache: WordsCountStore) { }
+  constructor(private readonly wordsCountCache: WordsCountStore) {}
 
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
