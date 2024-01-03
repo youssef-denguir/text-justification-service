@@ -1,10 +1,15 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AuthenticationModule } from './authentication/authentication.module';
+import { JustificationModule } from './justification/justification.module';
+import { ConfigModule } from '@nestjs/config';
+import { RateLimitingModule } from './rate-limiting/rate-limiting.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    AuthenticationModule,
+    JustificationModule,
+    RateLimitingModule,
+  ],
 })
 export class AppModule {}
