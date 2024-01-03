@@ -35,7 +35,7 @@ export class JustificationService {
     for (let i = 0; i < wordsPerLine.length; i++) {
       const currentLineWords: string[] = wordsPerLine[i];
 
-      const isLastLine = i === wordsPerLine.length;
+      const isLastLine = i === wordsPerLine.length - 1;
       const justificationType: JustificationType = this.getJustificationType(
         currentLineWords.length,
         isLastLine,

@@ -1,5 +1,13 @@
 import { ILineJusificationStrategy } from './abstractions/text-justification-strategy.interface';
 
+/**
+ * A strategy for left justification. It concatenates the lines' words list with
+ * a space and pads the rest of width with spaces
+ * E.g: ["1", "2", "3"] => "1 2 3 {remaining spaces until lineWidth}"
+ *
+ * @class LeftJustificationStrategy
+ * @implements {ILineJusificationStrategy}
+ */
 export class LeftJustificationStrategy implements ILineJusificationStrategy {
   justify(words: string[], lineWidth: number): string {
     let line: string = words[0];

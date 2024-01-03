@@ -33,7 +33,7 @@ export class JustificationController {
   @ApiConsumes('text/plain')
   @ApiBody({ type: String })
   @ApiOkResponse({ type: TextJustificationResponse })
-  async JustifyText(@Req() request: RawBodyRequest<Request>): Promise<string> {
+  justifyText(@Req() request: RawBodyRequest<Request>): string {
     const justifiedText = this.justificationService.justifyText(
       request.rawBody?.toString('utf-8'),
     );
