@@ -1,18 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { JustificationController } from '../justification.controller';
 import { JustificationService } from '../justification.service';
-import { RawBodyRequest } from '@nestjs/common';
-import { Request } from 'express';
 import { LineJustificationStrategyProvider } from '../text-jutification-strategies/text-justification-provider';
 import { AuthenticationService } from '@/authentication/authentication.service';
 import { JwtModule } from '@nestjs/jwt';
+import { AuthenticatedRequest } from '@/core/types/authenticated-request';
+import { RateLimitingModule } from '@/rate-limiting/rate-limiting.module';
 
 describe('AuthenticationController', () => {
   let controller: JustificationController;
-  let service: JustificationService;
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [JwtModule],
+      imports: [JwtModule, RateLimitingModule],
       controllers: [JustificationController],
       providers: [
         JustificationService,
@@ -22,7 +21,6 @@ describe('AuthenticationController', () => {
     }).compile();
 
     controller = module.get<JustificationController>(JustificationController);
-    service = module.get<JustificationService>(JustificationService);
   });
 
   it('should be defined', () => {
@@ -30,15 +28,13 @@ describe('AuthenticationController', () => {
   });
 
   it('should parse body and return object', () => {
-    jest
-      .spyOn(service, 'justifyText')
-      .mockImplementation((textWords: string) => textWords);
-
-    const input = 'some text';
-    const result = controller.justifyText({
-      rawBody: Buffer.from(input, 'utf-8'),
-    } as RawBodyRequest<Request>);
-
-    expect(result).toEqual(input);
+    const input = 'text    one left';
+    const request = {
+      body: input,
+      tokenPayload: { email: 'youssef@gmail.com' },
+    } as AuthenticatedRequest;
+    const result = controller.justifyText(request);
+    const expected = 'text one left'.concat(' '.repeat(67));
+    expect(result.justified_text).toEqual(expected);
   });
 });

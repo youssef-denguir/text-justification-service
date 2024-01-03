@@ -1,25 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { LineJustificationStrategyProvider } from './text-jutification-strategies/text-justification-provider';
 import { JustificationType } from './text-jutification-strategies/text-justification-type';
+import { JUSTIFICATION_LINE_LENGTH } from '@/core/constants';
 
 @Injectable()
 export class JustificationService {
-  private readonly lineWidth: number = 80;
-
   constructor(
     private readonly textJustificationStrategyProvider: LineJustificationStrategyProvider,
   ) {}
-
-  justifyText(text: string): string {
-    let textWords: string[] = text.split(/\s+/);
-
-    //check if the is strings with length higher than maxWidth and split them into two strings
-    if (textWords.some((word) => word.length > this.lineWidth)) {
-      textWords = this.splitLongWords(textWords);
-    }
-
-    return this.fullJustify(textWords);
-  }
 
   /**
    * Description placeholder
@@ -28,7 +16,7 @@ export class JustificationService {
    * @param {string[]} words
    * @returns {string}
    */
-  fullJustify(words: string[]): string {
+  justifyText(words: string[]): string {
     const result: string[] = [];
     const wordsPerLine: string[][] = this.groupWordsByLine(words);
 
@@ -47,7 +35,7 @@ export class JustificationService {
 
       const justifiedLine = lineJustificationStrategy.justify(
         currentLineWords,
-        this.lineWidth,
+        JUSTIFICATION_LINE_LENGTH,
       );
       result.push(justifiedLine);
     }
@@ -90,7 +78,7 @@ export class JustificationService {
 
     for (let i = 1; i < words.length; i++) {
       const cannotFitWordInLine =
-        lineLength + 1 + words[i].length > this.lineWidth;
+        lineLength + 1 + words[i].length > JUSTIFICATION_LINE_LENGTH;
       if (cannotFitWordInLine) {
         // push the line words list to result
         result.push(currentLine);
@@ -107,33 +95,6 @@ export class JustificationService {
 
     // push last line
     result.push(currentLine);
-    return result;
-  }
-
-  /**
-   * Description placeholder
-   *
-   * @param {string[]} strings
-   * @returns {string[]}
-   */
-  private splitLongWords(strings: string[]): string[] {
-    const result: string[] = [];
-
-    for (const word of strings) {
-      if (word.length > this.lineWidth) {
-        // If the string exceeds the limit, split it into smaller strings
-        let currentIndex = 0;
-        while (currentIndex < word.length) {
-          const endIndex = currentIndex + this.lineWidth;
-          const substring = word.substring(currentIndex, endIndex);
-          result.push(substring);
-          currentIndex += this.lineWidth;
-        }
-      } else {
-        result.push(word);
-      }
-    }
-
     return result;
   }
 }
