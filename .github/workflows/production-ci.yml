@@ -1,12 +1,13 @@
 # This workflow will do a clean installation of node dependencies, build the source code, run tests and checks coverage
 name: CI
-on: 
-  push:
-    branches:
-    - main
+on:
+  # Triggers the workflow on pullrequest events on the main branch
   pull_request:
-    branches:
-    - main
+    branches: [main]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
