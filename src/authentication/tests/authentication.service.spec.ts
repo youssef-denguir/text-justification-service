@@ -4,7 +4,7 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 
 describe('AuthenticationService', () => {
   let service: AuthenticationService;
-  let jwtService: JwtService;
+let jwtService: JwtService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -13,7 +13,7 @@ describe('AuthenticationService', () => {
     }).compile();
 
     service = module.get<AuthenticationService>(AuthenticationService);
-    jwtService = module.get<JwtService>(JwtService);
+  jwtService = module.get<JwtService>(JwtService);
   });
 
   it('should return an object wrapping the access_token', async () => {
