@@ -1,5 +1,12 @@
 import { ILineJusificationStrategy } from './abstractions/text-justification-strategy.interface';
 
+/**
+ * A strategy for full justification. It concatenates the lines' words, and tries
+ * to fit equal spaces between them.
+ *
+ * @class FullJustificationStrategy
+ * @implements {ILineJusificationStrategy}
+ */
 export class FullJustificationStrategy implements ILineJusificationStrategy {
   justify(words: string[], lineWidth: number): string {
     const lineLength = words.reduce((acc, word) => acc + word.length, 0);
