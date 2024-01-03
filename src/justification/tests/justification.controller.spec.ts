@@ -4,14 +4,21 @@ import { JustificationService } from '../justification.service';
 import { RawBodyRequest } from '@nestjs/common';
 import { Request } from 'express';
 import { LineJustificationStrategyProvider } from '../text-jutification-strategies/text-justification-provider';
+import { AuthenticationService } from '@/authentication/authentication.service';
+import { JwtModule } from '@nestjs/jwt';
 
 describe('AuthenticationController', () => {
   let controller: JustificationController;
   let service: JustificationService;
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [JwtModule],
       controllers: [JustificationController],
-      providers: [JustificationService, LineJustificationStrategyProvider],
+      providers: [
+        JustificationService,
+        LineJustificationStrategyProvider,
+        AuthenticationService,
+      ],
     }).compile();
 
     controller = module.get<JustificationController>(JustificationController);
