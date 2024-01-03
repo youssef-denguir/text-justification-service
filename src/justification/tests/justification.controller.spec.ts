@@ -14,7 +14,11 @@ describe('AuthenticationController', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [JwtModule],
       controllers: [JustificationController],
-      providers: [JustificationService, LineJustificationStrategyProvider, AuthenticationService],
+      providers: [
+        JustificationService,
+        LineJustificationStrategyProvider,
+        AuthenticationService,
+      ],
     }).compile();
 
     controller = module.get<JustificationController>(JustificationController);
