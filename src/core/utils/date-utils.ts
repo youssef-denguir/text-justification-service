@@ -1,8 +1,11 @@
-export function isCurrentDay(date: Date) {
-  const now = new Date();
-  return (
-    now.getDate() === date.getDate() &&
-    now.getMonth() === date.getUTCMonth() &&
-    now.getFullYear() === date.getFullYear()
-  );
+export class DateUtils {
+  isCurrentDay(date: Date) {
+    const now = new Date();
+    return (
+      now.getDate() === date.getDate() &&
+      now.getMonth() === date.getUTCMonth() &&
+      now.getFullYear() === date.getFullYear()
+    );
+  }
 }
+

@@ -15,13 +15,13 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Request } from 'express';
 import { TextJustificationResponse } from './dto/text-justification-response';
 import { AuthenticationGuard } from '@/authentication/guards/authentication.guard';
 import { JUSTIFICATION_LINE_LENGTH } from '@/core/constants';
 import { WordSplitter } from '@/core/formatters/word-splitter';
 import { TextJustificationGuard } from '@/rate-limiting/text-justification/text-justification-guard';
 import { WordsCountStore } from '@/rate-limiting/text-justification/words-count.store';
+import { AuthenticatedRequest } from '@/core/types/authenticated-request';
 
 @ApiTags('Text justifcation')
 @ApiBearerAuth()
@@ -32,7 +32,7 @@ export class JustificationController {
   constructor(
     private readonly justificationService: JustificationService,
     private readonly wordsCountStore: WordsCountStore,
-  ) {}
+  ) { }
 
   @Post()
   @UseGuards(TextJustificationGuard)
@@ -41,9 +41,7 @@ export class JustificationController {
   @ApiConsumes('text/plain')
   @ApiBody({ type: String })
   @ApiOkResponse({ type: TextJustificationResponse })
-  async JustifyText(
-    @Req() request: Request & { tokenPayload },
-  ): Promise<string> {
+  justifyText(@Req() request: AuthenticatedRequest): TextJustificationResponse {
     const { email } = request.tokenPayload;
     const text: string = request.body;
 
@@ -52,9 +50,9 @@ export class JustificationController {
 
     const cacheRecord = this.wordsCountStore.get(email);
     this.wordsCountStore.set(email, {
-      date: cacheRecord.date,
-      count: cacheRecord.count + textWords.length,
+      date: cacheRecord?.date ?? new Date(),
+      count: (cacheRecord?.count ?? 0) + textWords.length,
     });
-    return justifiedText;
+    return { justified_text: justifiedText };
   }
 }
