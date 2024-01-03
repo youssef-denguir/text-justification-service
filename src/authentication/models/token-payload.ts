@@ -1,3 +1,7 @@
 export class TokenPayload {
-  email: string;
+  public email: string;
+
+  constructor(email: string) {
+    this.email = email;
+  }
 }

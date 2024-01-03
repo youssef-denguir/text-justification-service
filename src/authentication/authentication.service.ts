@@ -12,6 +12,7 @@ export class AuthenticationService {
   }
 
   async validateToken(token: string): Promise<TokenPayload> {
-    return this._jwtService.verifyAsync(token);
+    const payload = await this._jwtService.verifyAsync(token);
+    return new TokenPayload(payload.email);
   }
 }
